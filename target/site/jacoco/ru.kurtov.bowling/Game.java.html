@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">bowling</a> &gt; <a href="index.source.html" class="el_package">ru.kurtov.bowling</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package ru.kurtov.bowling;
+
+import java.util.ArrayList;
+import org.apache.commons.lang.StringUtils;
+import ru.kurtov.bowling.exceptions.AddPlayerInStartedGameException;
+import ru.kurtov.bowling.exceptions.GameWithoutPlayersException;
+
+<span class="fc" id="L8">public class Game {</span>
+<span class="fc" id="L9">    private final ArrayList&lt;Player&gt; players = new ArrayList();</span>
+<span class="fc" id="L10">    private int playerNumner = 0;</span>
+<span class="fc" id="L11">    private int playerCount  = 0;</span>
+<span class="fc" id="L12">    private boolean started = false; //Признак начатой игры</span>
+    
+    public static void main(String[] args) {
+<span class="fc" id="L15">        Game g = new Game();</span>
+<span class="fc" id="L16">        int i=0;</span>
+        
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        for(; i&lt;args.length; i++) {</span>
+<span class="fc bfc" id="L19" title="All 2 branches covered.">            if(!Frame.availableValue(args[i])) {</span>
+<span class="fc" id="L20">                g.addPlayer(args[i]);</span>
+            } else {
+                break;
+            }
+        }
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        for(; i&lt;args.length; i++) {</span>
+<span class="fc" id="L26">            g.shot(args[i]);</span>
+        }
+        
+<span class="fc" id="L29">        System.out.println(g.toString());</span>
+<span class="fc" id="L30">    }</span>
+    
+    public Game addPlayer(String name) {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        if(started) {</span>
+<span class="fc" id="L34">            throw new AddPlayerInStartedGameException();</span>
+        }
+        
+<span class="fc" id="L37">        players.add(new Player(name));</span>
+<span class="fc" id="L38">        playerCount++;</span>
+        
+<span class="fc" id="L40">        return this;</span>
+    }
+    
+    public Player getPlayer() {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if(playerCount == 0) {</span>
+<span class="fc" id="L45">            throw new GameWithoutPlayersException();</span>
+        }
+        
+<span class="fc" id="L48">        Player p = players.get(playerNumner);</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if(p.getCurrentFrame().isComplite()) {</span>
+<span class="fc" id="L50">            playerNumner = (playerNumner + 1) % playerCount;</span>
+<span class="fc" id="L51">            p = players.get(playerNumner);</span>
+        }
+        
+<span class="fc" id="L54">        return p;        </span>
+    }
+    
+    public Game shot(String pins) {
+<span class="fc" id="L58">        started = true;</span>
+<span class="fc" id="L59">        getPlayer().shot(pins);</span>
+        
+<span class="fc" id="L61">        return this;</span>
+    }
+    
+    public Game shot(int pins) {
+<span class="fc" id="L65">        started = true;</span>
+<span class="fc" id="L66">        getPlayer().shot(pins);</span>
+        
+<span class="fc" id="L68">        return this;</span>
+    }
+    
+    @Override
+    public String toString() {
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if(playerCount == 0) {</span>
+<span class="fc" id="L74">            throw new GameWithoutPlayersException();</span>
+        }
+<span class="fc" id="L76">        String[] res = new String[playerCount];</span>
+        
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for(int i = 0; i&lt;playerCount; i++) {</span>
+<span class="fc" id="L79">            res[i] = players.get(i).toString();</span>
+        }
+        
+<span class="fc" id="L82">        return StringUtils.join(res, &quot;\n&quot;);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
