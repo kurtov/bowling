@@ -9,155 +9,158 @@ import ru.kurtov.bowling.exceptions.IllegalStrikeException;
 
 public class Frame {
     static public final int PINS_COUNT = 10;
-    //static public final int UNDEFINED_SCORE = -1;
     
     static public final int ORDINAR = 0;
     static public final int STRIKE = 1;
     static public final int SPARE = 2;
     
     protected Integer[] pins;
-<span class="fc" id="L19">    protected int shotInFrame = 0; //Указатель на номер броска в фрейме</span>
-<span class="fc" id="L20">    private int totalPins = 0;     //Количество сбитых кегель в фрейме</span>
-    private Integer score; // = UNDEFINED_SCORE;
+<span class="fc" id="L18">    protected int shotInFrame = 0; //Указатель на номер броска в фрейме</span>
+<span class="fc" id="L19">    private int totalPins = 0;     //Количество сбитых кегель в фрейме</span>
+    private Integer score;
 
-<span class="fc" id="L23">    protected int type = ORDINAR;</span>
+<span class="fc" id="L22">    protected int type = ORDINAR;</span>
 
-<span class="fc" id="L25">    public Frame() {</span>
-<span class="fc" id="L26">        this.pins = new Integer[]{0, 0};</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L24">    public Frame() {</span>
+<span class="fc" id="L25">        this.pins = new Integer[]{0, 0};</span>
+<span class="fc" id="L26">    }</span>
     
     public int getType() {
-<span class="fc" id="L30">        return type;</span>
+<span class="fc" id="L29">        return type;</span>
     }
     
     public int getTotalPins() {
-<span class="fc" id="L34">        return totalPins;</span>
+<span class="fc" id="L33">        return totalPins;</span>
     }
     
     public Integer getScore() {
-<span class="fc" id="L38">        return score;</span>
+<span class="fc" id="L37">        return score;</span>
     }
 
     public void setScore(int score) {
-<span class="fc" id="L42">        this.score = score;</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L41">        this.score = score;</span>
+<span class="fc" id="L42">    }</span>
     
     public int getShotInFrame() {
-<span class="fc" id="L46">        return this.shotInFrame;</span>
+<span class="fc" id="L45">        return this.shotInFrame;</span>
     }
     
     public int getPins(int shotNumber) {
-<span class="fc" id="L50">        return pins[shotNumber];</span>
+<span class="fc" id="L49">        return pins[shotNumber];</span>
     }
     
     protected void checkIllegalStrikeException(String pinsCount) {
-<span class="fc bfc" id="L54" title="All 6 branches covered.">        if(pinsCount.equals(&quot;X&quot;) &amp;&amp; (shotInFrame == 1 &amp;&amp; pins[0] &lt; PINS_COUNT)) {</span>
-<span class="fc" id="L55">            throw new IllegalStrikeException();</span>
+<span class="fc bfc" id="L53" title="All 6 branches covered.">        if(pinsCount.equals(&quot;X&quot;) &amp;&amp; (shotInFrame == 1 &amp;&amp; pins[0] &lt; PINS_COUNT)) {</span>
+<span class="fc" id="L54">            throw new IllegalStrikeException();</span>
         }
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L56">    }</span>
     
     protected void checkIllegalSpareException(String pinsCount) {
         //Спэр не может быть при первом броске
         //Спэр не может быть при втором броске при условии, что в первом страйк
-<span class="fc bfc" id="L62" title="All 8 branches covered.">        if(pinsCount.equals(&quot;/&quot;) &amp;&amp; ((shotInFrame == 0) || (shotInFrame == 1 &amp;&amp; pins[0] == PINS_COUNT))) {</span>
-<span class="fc" id="L63">            throw new IllegalSpareException();</span>
+<span class="fc bfc" id="L61" title="All 8 branches covered.">        if(pinsCount.equals(&quot;/&quot;) &amp;&amp; ((shotInFrame == 0) || (shotInFrame == 1 &amp;&amp; pins[0] == PINS_COUNT))) {</span>
+<span class="fc" id="L62">            throw new IllegalSpareException();</span>
         }
-<span class="fc" id="L65">    }</span>
+<span class="fc" id="L64">    }</span>
 
     protected void checkIntArgument(int pinsCount) {
-<span class="fc bfc" id="L68" title="All 4 branches covered.">        if(pinsCount &lt; 0 || pinsCount &gt; 10) {</span>
-<span class="fc" id="L69">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L67" title="All 4 branches covered.">        if(pinsCount &lt; 0 || pinsCount &gt; 10) {</span>
+<span class="fc" id="L68">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L70">    }</span>
     
     protected void checkPinsCountArgument(int pinsCount) {
-<span class="fc bfc" id="L74" title="All 6 branches covered.">        if(shotInFrame == 1 &amp;&amp; pins[0] &lt; PINS_COUNT &amp;&amp; (pins[0] + pinsCount &gt; PINS_COUNT)) {</span>
-<span class="fc" id="L75">            throw new ExceedPinsCountException();</span>
+<span class="fc bfc" id="L73" title="All 6 branches covered.">        if(shotInFrame == 1 &amp;&amp; pins[0] &lt; PINS_COUNT &amp;&amp; (pins[0] + pinsCount &gt; PINS_COUNT)) {</span>
+<span class="fc" id="L74">            throw new ExceedPinsCountException();</span>
         }
-<span class="fc" id="L77">    }</span>
+<span class="fc" id="L76">    }</span>
     
     
     protected void checkStringArgument(String pinsCount) {
-<span class="fc bfc" id="L81" title="All 2 branches covered.">        if(!(availableValue(pinsCount))) {</span>
-<span class="fc" id="L82">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if(!(availableValue(pinsCount))) {</span>
+<span class="fc" id="L81">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L83">    }</span>
 
     public Frame shot(int pinsCount) {
-<span class="fc" id="L87">        checkIntArgument(pinsCount);</span>
+<span class="fc" id="L86">        checkIntArgument(pinsCount);</span>
         
-<span class="fc bfc" id="L89" title="All 2 branches covered.">        if(isComplite()) {</span>
-<span class="fc" id="L90">            throw new ExceedShotsCountException();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if(isComplite()) {</span>
+<span class="fc" id="L89">            throw new ExceedShotsCountException();</span>
         }
         
-<span class="fc" id="L93">        checkPinsCountArgument(pinsCount);</span>
+<span class="fc" id="L92">        checkPinsCountArgument(pinsCount);</span>
         
-<span class="fc" id="L95">        this.pins[shotInFrame++] = pinsCount;</span>
-<span class="fc" id="L96">        this.totalPins += pinsCount;</span>
-<span class="fc" id="L97">        this.type = defineType();</span>
+<span class="fc" id="L94">        this.pins[shotInFrame++] = pinsCount;</span>
+<span class="fc" id="L95">        this.totalPins += pinsCount;</span>
+<span class="fc" id="L96">        this.type = defineType();</span>
         
-<span class="fc" id="L99">        return this;</span>
+<span class="fc" id="L98">        return this;</span>
     }
     
     
     public Frame shot(String pinsCount) {
-<span class="fc" id="L104">        checkIllegalSpareException(pinsCount);</span>
-<span class="fc" id="L105">        checkIllegalStrikeException(pinsCount);</span>
-<span class="fc" id="L106">        checkStringArgument(pinsCount);</span>
+<span class="fc" id="L103">        checkIllegalSpareException(pinsCount);</span>
+<span class="fc" id="L104">        checkIllegalStrikeException(pinsCount);</span>
+<span class="fc" id="L105">        checkStringArgument(pinsCount);</span>
  
-<span class="fc" id="L108">        return shot(decodePins(pinsCount));</span>
+<span class="fc" id="L107">        return shot(decodePins(pinsCount));</span>
     }
 
     private int decodePins(String pinsCount) {
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        if(pinsCount.equals(&quot;X&quot;)) {return PINS_COUNT;}</span>
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        if(pinsCount.equals(&quot;/&quot;)) {return PINS_COUNT - pins[shotInFrame-1];}</span>
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        if(pinsCount.equals(&quot;-&quot;)) {return 0;}</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if(pinsCount.equals(&quot;X&quot;)) {return PINS_COUNT;}</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if(pinsCount.equals(&quot;/&quot;)) {return PINS_COUNT - pins[shotInFrame-1];}</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if(pinsCount.equals(&quot;-&quot;)) {return 0;}</span>
         
-<span class="fc" id="L116">        return Integer.parseInt(pinsCount);</span>
+<span class="fc" id="L115">        return Integer.parseInt(pinsCount);</span>
     }
     
     private String encodePins(int shotNumber) {
-<span class="fc" id="L120">        int p = this.pins[shotNumber];</span>
+<span class="fc" id="L119">        int p = this.pins[shotNumber];</span>
         
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        if(p==0) {return &quot;-&quot;;}</span>
-<span class="fc bfc" id="L123" title="All 4 branches covered.">        if(shotNumber &gt; 0 &amp;&amp; pins[shotNumber-1] + pins[shotNumber] == PINS_COUNT) {return &quot;/&quot;;}</span>
-<span class="fc bfc" id="L124" title="All 2 branches covered.">        if(p==PINS_COUNT) {return &quot;X&quot;;}</span>
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        if(p==0) {return &quot;-&quot;;}</span>
+<span class="fc bfc" id="L122" title="All 4 branches covered.">        if(shotNumber &gt; 0 &amp;&amp; pins[shotNumber-1] + pins[shotNumber] == PINS_COUNT) {return &quot;/&quot;;}</span>
+<span class="fc bfc" id="L123" title="All 2 branches covered.">        if(p==PINS_COUNT) {return &quot;X&quot;;}</span>
         
-<span class="fc" id="L126">        return String.valueOf(p);</span>
+<span class="fc" id="L125">        return String.valueOf(p);</span>
     }
     
     
     public boolean isComplite() {
-<span class="fc bfc" id="L131" title="All 4 branches covered.">        return (pins[0] == PINS_COUNT) || (shotInFrame == 2);</span>
+<span class="fc bfc" id="L130" title="All 4 branches covered.">        return (pins[0] == PINS_COUNT) || (shotInFrame == 2);</span>
+    }
+    
+    public boolean isEmpty() {
+<span class="nc bnc" id="L134" title="All 2 branches missed.">        return shotInFrame == 0;</span>
     }
     
     
     public int defineType() {
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        if(pins[0] == PINS_COUNT) {</span>
-<span class="fc" id="L137">            return STRIKE;</span>
-<span class="fc bfc" id="L138" title="All 2 branches covered.">        } else if(pins[0] + pins[1] == PINS_COUNT) {</span>
-<span class="fc" id="L139">            return SPARE;</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if(pins[0] == PINS_COUNT) {</span>
+<span class="fc" id="L140">            return STRIKE;</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">        } else if(pins[0] + pins[1] == PINS_COUNT) {</span>
+<span class="fc" id="L142">            return SPARE;</span>
         }
         
-<span class="fc" id="L142">        return ORDINAR;</span>
+<span class="fc" id="L145">        return ORDINAR;</span>
     }
     
     public String shotsToString() {
-<span class="fc" id="L146">        String[] ret = new String[pins.length];</span>
-<span class="fc" id="L147">        Arrays.fill(ret, &quot; &quot;);</span>
+<span class="fc" id="L149">        String[] ret = new String[pins.length];</span>
+<span class="fc" id="L150">        Arrays.fill(ret, &quot; &quot;);</span>
         
-<span class="fc bfc" id="L149" title="All 2 branches covered.">        for(int i = 0; i&lt;shotInFrame; i++) {</span>
-<span class="fc" id="L150">            ret[i] = encodePins(i);</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">        for(int i = 0; i&lt;shotInFrame; i++) {</span>
+<span class="fc" id="L153">            ret[i] = encodePins(i);</span>
         }
         
-<span class="fc" id="L153">        return StringUtils.join(ret, &quot;│&quot;);</span>
+<span class="fc" id="L156">        return StringUtils.join(ret, &quot;│&quot;);</span>
     }; 
     
     public static boolean availableValue(String value) {
-<span class="fc bfc" id="L157" title="All 2 branches covered.">        return StringUtils.isNumeric(value) || </span>
-<span class="fc bfc" id="L158" title="All 2 branches covered.">                value.equals(&quot;/&quot;) ||</span>
-<span class="fc bfc" id="L159" title="All 2 branches covered.">                value.equals(&quot;X&quot;) ||</span>
-<span class="fc bfc" id="L160" title="All 2 branches covered.">                value.equals(&quot;-&quot;);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        return StringUtils.isNumeric(value) || </span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">                value.equals(&quot;/&quot;) ||</span>
+<span class="fc bfc" id="L162" title="All 2 branches covered.">                value.equals(&quot;X&quot;) ||</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">                value.equals(&quot;-&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
