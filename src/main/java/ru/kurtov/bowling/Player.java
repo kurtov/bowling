@@ -1,6 +1,7 @@
 package ru.kurtov.bowling;
 
 import org.apache.commons.lang.StringUtils;
+import ru.kurtov.bowling.exceptions.BowlingException;
 import ru.kurtov.bowling.exceptions.ExceedFramesCountException;
 
 public class Player {
@@ -29,6 +30,21 @@ public class Player {
     
     public Player shot(int pins) {
         getNotCompliteFrame().shot(pins);
+        
+        return this;
+    }
+    
+    //Метод используется для демонстрации возможностей Mock-объектов
+    public Player setFrame(Frame f) {
+        //Сместить currentFrameIndex на первый незавершенный фрейм
+        //А потом проверить, пустой ли это фрейм
+        //Если да, установить этому фрейму значение f
+        //Иначе - нельзя заменить начатый фрейм.
+        if(getNotCompliteFrame().isEmpty()) {
+            frames[currentFrameIndex] = f;
+        } else {
+            throw new BowlingException();
+        }
         
         return this;
     }
@@ -77,7 +93,6 @@ public class Player {
                         }
                     } 
 
-                    //то очки можно посчитать, если следующий фрейм -
                     //не страйк и завершенны
                     if((nextFrame.getType() != Frame.STRIKE) && nextFrame.isComplite()) {
                         currentScore += currentFrame.getTotalPins()

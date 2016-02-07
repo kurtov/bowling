@@ -3,6 +3,7 @@ package ru.kurtov.bowling;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import ru.kurtov.bowling.exceptions.BowlingException;
 import ru.kurtov.bowling.exceptions.ExceedFramesCountException;
 
 public class PlayerTest {
@@ -145,5 +146,20 @@ public class PlayerTest {
         
         assertEquals(30, player.getScore());
         System.out.println(player.toString());
+    }
+    
+    @Test
+    public void testSetFrame() {
+        Frame f = new Frame().shot(3);
+        player.shot(8).shot("-").setFrame(f);
+        
+        assertEquals(f, player.getCurrentFrame());
+    }
+    
+    @Test(expected = BowlingException.class)
+    public void testSetFrameExcaption() {
+        Frame f = new Frame().shot(3);
+        
+        player.shot(8).setFrame(f);
     }
 }

@@ -9,7 +9,6 @@ import ru.kurtov.bowling.exceptions.IllegalStrikeException;
 
 public class Frame {
     static public final int PINS_COUNT = 10;
-    //static public final int UNDEFINED_SCORE = -1;
     
     static public final int ORDINAR = 0;
     static public final int STRIKE = 1;
@@ -18,7 +17,7 @@ public class Frame {
     protected Integer[] pins;
     protected int shotInFrame = 0; //Указатель на номер броска в фрейме
     private int totalPins = 0;     //Количество сбитых кегель в фрейме
-    private Integer score; // = UNDEFINED_SCORE;
+    private Integer score;
 
     protected int type = ORDINAR;
 
@@ -129,6 +128,10 @@ public class Frame {
     
     public boolean isComplite() {
         return (pins[0] == PINS_COUNT) || (shotInFrame == 2);
+    }
+    
+    public boolean isEmpty() {
+        return shotInFrame == 0;
     }
     
     

@@ -1,6 +1,6 @@
 package ru.kurtov.bowling.exceptions;
 
-public class GameWithoutPlayersException extends RuntimeException {
+public class GameWithoutPlayersException extends BowlingException {
     public GameWithoutPlayersException() {
         super("Игра без играков");
     }
