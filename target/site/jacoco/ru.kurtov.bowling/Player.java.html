@@ -5,33 +5,36 @@ import ru.kurtov.bowling.exceptions.BowlingException;
 import ru.kurtov.bowling.exceptions.ExceedFramesCountException;
 
 public class Player {
+    static public final int FRAMES_COUNT = 10;
     private final String name;
-<span class="fc" id="L9">    private final Frame[] frames = new Frame[10];</span>
-<span class="fc" id="L10">    private int currentFrameIndex = 0;</span>
+<span class="fc" id="L10">    private final Frame[] frames = new Frame[FRAMES_COUNT];</span>
+
+<span class="fc" id="L12">    private int currentFrameIndex = 0;</span>
     
-<span class="fc" id="L12">    public Player(String name) {</span>
-<span class="fc" id="L13">        this.name = name;</span>
+<span class="fc" id="L14">    public Player(String name) {</span>
+<span class="fc" id="L15">        this.name = name;</span>
+<span class="fc" id="L16">        int lastIndes = FRAMES_COUNT-1;</span>
         
-<span class="fc bfc" id="L15" title="All 2 branches covered.">        for(int i = 0; i&lt;9; i++) {</span>
-<span class="fc" id="L16">            frames[i] = new Frame();</span>
+<span class="fc bfc" id="L18" title="All 2 branches covered.">        for(int i = 0; i&lt;lastIndes; i++) {</span>
+<span class="fc" id="L19">            frames[i] = new Frame();</span>
         }
-<span class="fc" id="L18">        frames[9] = new TenthFrame();</span>
-<span class="fc" id="L19">    }</span>
+<span class="fc" id="L21">        frames[lastIndes] = new TenthFrame();</span>
+<span class="fc" id="L22">    }</span>
     
     public String getName() {
-<span class="fc" id="L22">        return name;</span>
+<span class="fc" id="L25">        return name;</span>
     }
     
     public Player shot(String pins) {
-<span class="fc" id="L26">        getNotCompliteFrame().shot(pins);</span>
+<span class="fc" id="L29">        getNotCompliteFrame().shot(pins);</span>
         
-<span class="fc" id="L28">        return this;</span>
+<span class="fc" id="L31">        return this;</span>
     }
     
     public Player shot(int pins) {
-<span class="fc" id="L32">        getNotCompliteFrame().shot(pins);</span>
+<span class="fc" id="L35">        getNotCompliteFrame().shot(pins);</span>
         
-<span class="fc" id="L34">        return this;</span>
+<span class="fc" id="L37">        return this;</span>
     }
     
     //Метод используется для демонстрации возможностей Mock-объектов
@@ -40,13 +43,13 @@ public class Player {
         //А потом проверить, пустой ли это фрейм
         //Если да, установить этому фрейму значение f
         //Иначе - нельзя заменить начатый фрейм.
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        if(getNotCompliteFrame().isEmpty()) {</span>
-<span class="nc" id="L44">            frames[currentFrameIndex] = f;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if(getNotCompliteFrame().isEmpty()) {</span>
+<span class="fc" id="L47">            frames[currentFrameIndex] = f;</span>
         } else {
-<span class="nc" id="L46">            throw new BowlingException();</span>
+<span class="fc" id="L49">            throw new BowlingException();</span>
         }
         
-<span class="nc" id="L49">        return this;</span>
+<span class="fc" id="L52">        return this;</span>
     }
     
     public int getScore() {
@@ -54,114 +57,113 @@ public class Player {
         Frame nextFrame;
         Frame nextNextFrame;
         
-<span class="fc" id="L57">        int currentScore = 0;</span>
+<span class="fc" id="L60">        int currentScore = 0;</span>
         
         
-<span class="fc bfc" id="L60" title="All 2 branches covered.">        for(int i = 0; i&lt;= currentFrameIndex; i++) {</span>
-<span class="fc" id="L61">            currentFrame = frames[i];</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        for(int i = 0; i&lt;= currentFrameIndex; i++) {</span>
+<span class="fc" id="L64">            currentFrame = frames[i];</span>
             
             //Очки считаем только в завершенных фреймах
-<span class="fc bfc" id="L64" title="All 2 branches covered.">            if(currentFrame.isComplite()) {</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">            if(currentFrame.isComplite()) {</span>
 
                 //Если фрейм открытый, то очки для него можно посчитать сразу
-<span class="fc bfc" id="L67" title="All 2 branches covered.">                if(currentFrame.getType() == Frame.ORDINAR) {</span>
-<span class="fc" id="L68">                    currentScore += currentFrame.getTotalPins();</span>
-<span class="fc" id="L69">                    currentFrame.setScore(currentScore);</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                if(currentFrame.getType() == Frame.OPEN) {</span>
+<span class="fc" id="L71">                    currentScore += currentFrame.getTotalPins();</span>
+<span class="fc" id="L72">                    currentFrame.setScore(currentScore);</span>
                 }
                 
                 //Если спэр, то очки можно посчитать только при условии,
                 //Что в следующем фрейме сделан первый бросок
-<span class="fc bfc" id="L74" title="All 4 branches covered.">                if((currentFrame.getType() == Frame.SPARE) &amp;&amp; (frames[i+1].getShotInFrame() &gt; 0)) {</span>
-<span class="fc" id="L75">                    currentScore += currentFrame.getTotalPins()</span>
-<span class="fc" id="L76">                            + frames[i+1].getPins(0);</span>
-<span class="fc" id="L77">                    currentFrame.setScore(currentScore);</span>
+<span class="fc bfc" id="L77" title="All 4 branches covered.">                if((currentFrame.getType() == Frame.SPARE) &amp;&amp; (frames[i+1].getShotInFrame() &gt; 0)) {</span>
+<span class="fc" id="L78">                    currentScore += currentFrame.getTotalPins()</span>
+<span class="fc" id="L79">                            + frames[i+1].getPins(0);</span>
+<span class="fc" id="L80">                    currentFrame.setScore(currentScore);</span>
                 }
                 
-                //Если страйк, то очки можно посчитать, если следующий фрейм:
-<span class="fc bfc" id="L81" title="All 2 branches covered.">                if(currentFrame.getType() == Frame.STRIKE) {</span>
-<span class="fc" id="L82">                    nextFrame = frames[i+1];</span>
+                
+<span class="fc bfc" id="L84" title="All 2 branches covered.">                if(currentFrame.getType() == Frame.STRIKE) {</span>
+<span class="fc" id="L85">                    nextFrame = frames[i+1];</span>
                     
                     //страйк и в следующем фрейме сделан 1-й бросок
-<span class="fc bfc" id="L85" title="All 2 branches covered.">                    if(nextFrame.getType() == Frame.STRIKE) {</span>
-<span class="fc" id="L86">                        nextNextFrame = frames[i+2];</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">                    if(nextFrame.getType() == Frame.STRIKE) {</span>
+<span class="fc" id="L89">                        nextNextFrame = frames[i+2];</span>
                         
-<span class="fc bfc" id="L88" title="All 2 branches covered.">                        if(nextNextFrame.getShotInFrame() &gt; 0) {</span>
-<span class="fc" id="L89">                            currentScore += currentFrame.getTotalPins()</span>
-<span class="fc" id="L90">                                + nextFrame.getTotalPins() </span>
-<span class="fc" id="L91">                                + nextNextFrame.getPins(0);</span>
-<span class="fc" id="L92">                            currentFrame.setScore(currentScore);</span>
+<span class="fc bfc" id="L91" title="All 2 branches covered.">                        if(nextNextFrame.getShotInFrame() &gt; 0) {</span>
+<span class="fc" id="L92">                            currentScore += currentFrame.getTotalPins()</span>
+<span class="fc" id="L93">                                + nextFrame.getTotalPins() </span>
+<span class="fc" id="L94">                                + nextNextFrame.getPins(0);</span>
+<span class="fc" id="L95">                            currentFrame.setScore(currentScore);</span>
                         }
                     } 
 
-                    //то очки можно посчитать, если следующий фрейм -
                     //не страйк и завершенны
-<span class="fc bfc" id="L98" title="All 4 branches covered.">                    if((nextFrame.getType() != Frame.STRIKE) &amp;&amp; nextFrame.isComplite()) {</span>
-<span class="fc" id="L99">                        currentScore += currentFrame.getTotalPins()</span>
-<span class="fc" id="L100">                            + nextFrame.getPins(0)</span>
-<span class="fc" id="L101">                            + nextFrame.getPins(1);</span>
-<span class="fc" id="L102">                        currentFrame.setScore(currentScore);</span>
+<span class="fc bfc" id="L100" title="All 4 branches covered.">                    if((nextFrame.getType() != Frame.STRIKE) &amp;&amp; nextFrame.isComplite()) {</span>
+<span class="fc" id="L101">                        currentScore += currentFrame.getTotalPins()</span>
+<span class="fc" id="L102">                            + nextFrame.getPins(0)</span>
+<span class="fc" id="L103">                            + nextFrame.getPins(1);</span>
+<span class="fc" id="L104">                        currentFrame.setScore(currentScore);</span>
                     }
                 }   
             }
         }
-<span class="fc" id="L107">        return currentScore;</span>
+<span class="fc" id="L109">        return currentScore;</span>
     }
    
     public Frame getCurrentFrame() {
-<span class="fc" id="L111">        return frames[currentFrameIndex];</span>
+<span class="fc" id="L113">        return frames[currentFrameIndex];</span>
     }
 
     private Frame getNotCompliteFrame() {
-<span class="fc" id="L115">        Frame currentFrame = frames[currentFrameIndex];</span>
+<span class="fc" id="L117">        Frame currentFrame = frames[currentFrameIndex];</span>
 
-<span class="fc bfc" id="L117" title="All 2 branches covered.">        if(currentFrame.isComplite()) {</span>
-<span class="fc bfc" id="L118" title="All 2 branches covered.">            if(currentFrameIndex &lt; 9) {</span>
-<span class="fc" id="L119">                currentFrame = frames[++currentFrameIndex];</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if(currentFrame.isComplite()) {</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">            if(currentFrameIndex &lt; FRAMES_COUNT - 1) {</span>
+<span class="fc" id="L121">                currentFrame = frames[++currentFrameIndex];</span>
             } else {
-<span class="fc" id="L121">                throw new ExceedFramesCountException();</span>
+<span class="fc" id="L123">                throw new ExceedFramesCountException();</span>
             }
         }
         
-<span class="fc" id="L125">        return currentFrame;</span>
+<span class="fc" id="L127">        return currentFrame;</span>
     }
     
     @Override
     public String toString() {
-<span class="fc" id="L130">        String[] shots = new String[10];</span>
-<span class="fc" id="L131">        String[] scores = new String[10];</span>
-<span class="fc" id="L132">        StringBuilder res = new StringBuilder(&quot;&quot;);</span>
+<span class="fc" id="L132">        String[] shots = new String[FRAMES_COUNT];</span>
+<span class="fc" id="L133">        String[] scores = new String[FRAMES_COUNT];</span>
+<span class="fc" id="L134">        StringBuilder res = new StringBuilder(&quot;&quot;);</span>
         
-<span class="fc" id="L134">        this.getScore(); //Рассчитать очки</span>
+<span class="fc" id="L136">        this.getScore(); //Рассчитать очки</span>
 
-<span class="fc bfc" id="L136" title="All 2 branches covered.">        for(int i=0; i&lt;10; i++) {</span>
-<span class="fc" id="L137">            Frame f = frames[i];</span>
-<span class="fc bfc" id="L138" title="All 2 branches covered.">            String scoreFormat = i==9 ? &quot;%5d&quot; : &quot;%3d&quot;;</span>
-<span class="fc bfc" id="L139" title="All 2 branches covered.">            String space = i==9 ? &quot;     &quot; : &quot;   &quot;;</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">        for(int i=0; i&lt;FRAMES_COUNT; i++) {</span>
+<span class="fc" id="L139">            Frame f = frames[i];</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">            String scoreFormat = i==FRAMES_COUNT-1 ? &quot;%5d&quot; : &quot;%3d&quot;;</span>
+<span class="fc bfc" id="L141" title="All 2 branches covered.">            String space = i==FRAMES_COUNT-1 ? &quot;     &quot; : &quot;   &quot;;</span>
             
-<span class="fc" id="L141">            shots[i] = f.shotsToString();</span>
+<span class="fc" id="L143">            shots[i] = f.shotsToString();</span>
             
-<span class="fc bfc" id="L143" title="All 2 branches covered.">            if(f.getScore() == null)</span>
-<span class="fc" id="L144">                scores[i] = space;</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">            if(f.getScore() == null)</span>
+<span class="fc" id="L146">                scores[i] = space;</span>
             else {
-<span class="fc" id="L146">                scores[i] = String.format(scoreFormat, f.getScore());</span>
+<span class="fc" id="L148">                scores[i] = String.format(scoreFormat, f.getScore());</span>
             }
         }
         
-<span class="fc" id="L150">        res</span>
-<span class="fc" id="L151">                .append(&quot;┌─────────┬───┬───┬───┬───┬───┬───┬───┬───┬───┬─────┐\n&quot;)</span>
-<span class="fc" id="L152">                .append(&quot;│   Имя   │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │  10 │\n&quot;)</span>
-<span class="fc" id="L153">                .append(&quot;├─────────┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┬─┤\n&quot;)</span>
-<span class="fc" id="L154">                .append(&quot;│&quot;)</span>
-<span class="fc" id="L155">                .append(String.format(&quot;%-9s&quot;, StringUtils.substring(name, 0, 9)))</span>
+<span class="fc" id="L152">        res</span>
+<span class="fc" id="L153">                .append(&quot;┌─────────┬───┬───┬───┬───┬───┬───┬───┬───┬───┬─────┐\n&quot;)</span>
+<span class="fc" id="L154">                .append(&quot;│   Имя   │ 1 │ 2 │ 3 │ 4 │ 5 │ 6 │ 7 │ 8 │ 9 │  10 │\n&quot;)</span>
+<span class="fc" id="L155">                .append(&quot;├─────────┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┼─┬─┬─┤\n&quot;)</span>
 <span class="fc" id="L156">                .append(&quot;│&quot;)</span>
-<span class="fc" id="L157">                .append(StringUtils.join(shots, &quot;│&quot;))</span>
-<span class="fc" id="L158">                .append(&quot;│\n&quot;)</span>
-<span class="fc" id="L159">                .append(&quot;│         ├─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┴─┤\n&quot;)</span>
-<span class="fc" id="L160">                .append(&quot;│         │&quot;)</span>
-<span class="fc" id="L161">                .append(StringUtils.join(scores, &quot;│&quot;))</span>
-<span class="fc" id="L162">                .append(&quot;│\n&quot;)</span>
-<span class="fc" id="L163">                .append(&quot;└─────────┴───┴───┴───┴───┴───┴───┴───┴───┴───┴─────┘&quot;);</span>
-<span class="fc" id="L164">        return res.toString();</span>
+<span class="fc" id="L157">                .append(String.format(&quot;%-9s&quot;, StringUtils.substring(name, 0, 9)))</span>
+<span class="fc" id="L158">                .append(&quot;│&quot;)</span>
+<span class="fc" id="L159">                .append(StringUtils.join(shots, &quot;│&quot;))</span>
+<span class="fc" id="L160">                .append(&quot;│\n&quot;)</span>
+<span class="fc" id="L161">                .append(&quot;│         ├─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┼─┴─┴─┤\n&quot;)</span>
+<span class="fc" id="L162">                .append(&quot;│         │&quot;)</span>
+<span class="fc" id="L163">                .append(StringUtils.join(scores, &quot;│&quot;))</span>
+<span class="fc" id="L164">                .append(&quot;│\n&quot;)</span>
+<span class="fc" id="L165">                .append(&quot;└─────────┴───┴───┴───┴───┴───┴───┴───┴───┴───┴─────┘&quot;);</span>
+<span class="fc" id="L166">        return res.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
