@@ -10,7 +10,7 @@ import ru.kurtov.bowling.exceptions.IllegalStrikeException;
 public class Frame {
     static public final int PINS_COUNT = 10;
     
-    static public final int ORDINAR = 0;
+    static public final int OPEN = 0;
     static public final int STRIKE = 1;
     static public final int SPARE = 2;
     
@@ -19,7 +19,7 @@ public class Frame {
     private int totalPins = 0;     //Количество сбитых кегель в фрейме
     private Integer score;
 
-    protected int type = ORDINAR;
+    protected int type = OPEN;
 
     public Frame() {
         this.pins = new Integer[]{0, 0};
@@ -142,7 +142,7 @@ public class Frame {
             return SPARE;
         }
         
-        return ORDINAR;
+        return OPEN;
     }
     
     public String shotsToString() {

@@ -22,7 +22,7 @@ public class TenthFrame extends Frame {
     
     @Override
     public int defineType() {   
-        return ORDINAR;
+        return OPEN;
     }
     
     @Override

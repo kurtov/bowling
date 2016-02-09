@@ -5,17 +5,20 @@ import ru.kurtov.bowling.exceptions.BowlingException;
 import ru.kurtov.bowling.exceptions.ExceedFramesCountException;
 
 public class Player {
+    static public final int FRAMES_COUNT = 10;
     private final String name;
-    private final Frame[] frames = new Frame[10];
+    private final Frame[] frames = new Frame[FRAMES_COUNT];
+
     private int currentFrameIndex = 0;
     
     public Player(String name) {
         this.name = name;
+        int lastIndes = FRAMES_COUNT-1;
         
-        for(int i = 0; i<9; i++) {
+        for(int i = 0; i<lastIndes; i++) {
             frames[i] = new Frame();
         }
-        frames[9] = new TenthFrame();
+        frames[lastIndes] = new TenthFrame();
     }
     
     public String getName() {
@@ -64,7 +67,7 @@ public class Player {
             if(currentFrame.isComplite()) {
 
                 //Если фрейм открытый, то очки для него можно посчитать сразу
-                if(currentFrame.getType() == Frame.ORDINAR) {
+                if(currentFrame.getType() == Frame.OPEN) {
                     currentScore += currentFrame.getTotalPins();
                     currentFrame.setScore(currentScore);
                 }
@@ -77,7 +80,7 @@ public class Player {
                     currentFrame.setScore(currentScore);
                 }
                 
-                //Если страйк, то очки можно посчитать, если следующий фрейм:
+                
                 if(currentFrame.getType() == Frame.STRIKE) {
                     nextFrame = frames[i+1];
                     
@@ -114,7 +117,7 @@ public class Player {
         Frame currentFrame = frames[currentFrameIndex];
 
         if(currentFrame.isComplite()) {
-            if(currentFrameIndex < 9) {
+            if(currentFrameIndex < FRAMES_COUNT - 1) {
                 currentFrame = frames[++currentFrameIndex];
             } else {
                 throw new ExceedFramesCountException();
@@ -126,16 +129,16 @@ public class Player {
     
     @Override
     public String toString() {
-        String[] shots = new String[10];
-        String[] scores = new String[10];
+        String[] shots = new String[FRAMES_COUNT];
+        String[] scores = new String[FRAMES_COUNT];
         StringBuilder res = new StringBuilder("");
         
         this.getScore(); //Рассчитать очки
 
-        for(int i=0; i<10; i++) {
+        for(int i=0; i<FRAMES_COUNT; i++) {
             Frame f = frames[i];
-            String scoreFormat = i==9 ? "%5d" : "%3d";
-            String space = i==9 ? "     " : "   ";
+            String scoreFormat = i==FRAMES_COUNT-1 ? "%5d" : "%3d";
+            String space = i==FRAMES_COUNT-1 ? "     " : "   ";
             
             shots[i] = f.shotsToString();
             

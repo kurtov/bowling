@@ -1,9 +1,7 @@
 package ru.kurtov.bowling;
 
-import java.util.List;
 import static org.junit.Assert.assertEquals;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -29,7 +27,7 @@ public class MockTest {
         when(f.getPins(1)).thenReturn(4);
         when(f.getPins(2)).thenReturn(0);
         
-        when(f.getType()).thenReturn(Frame.ORDINAR);
+        when(f.getType()).thenReturn(Frame.OPEN);
         when(f.isComplite()).thenReturn(true);
         when(f.getTotalPins()).thenReturn(14);
         when(f.getShotInFrame()).thenReturn(3);
