@@ -21,8 +21,7 @@ public class TenthFrame extends Frame {
     }
     
     @Override
-    public int defineType() {   
-        return OPEN;
+    public void defineCalculation() {
     }
     
     @Override

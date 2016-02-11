@@ -1,6 +1,7 @@
 package ru.kurtov.bowling;
 
 import org.apache.commons.lang.StringUtils;
+import ru.kurtov.bowling.calculation.Calculation;
 import ru.kurtov.bowling.exceptions.BowlingException;
 import ru.kurtov.bowling.exceptions.ExceedFramesCountException;
 
@@ -23,6 +24,10 @@ public class Player {
     
     public String getName() {
         return name;
+    }
+    
+    public Frame getFrame(int index) {
+        return frames[index];
     }
     
     public Player shot(String pins) {
@@ -62,48 +67,16 @@ public class Player {
         
         for(int i = 0; i<= currentFrameIndex; i++) {
             currentFrame = frames[i];
-            
+                        
             //Очки считаем только в завершенных фреймах
             if(currentFrame.isComplite()) {
-
-                //Если фрейм открытый, то очки для него можно посчитать сразу
-                if(currentFrame.getType() == Frame.OPEN) {
-                    currentScore += currentFrame.getTotalPins();
+                Calculation calculation = currentFrame.getCalculation();
+                Integer score = calculation.getScore(this, i);
+                
+                if(score != null) {
+                    currentScore += score;
                     currentFrame.setScore(currentScore);
                 }
-                
-                //Если спэр, то очки можно посчитать только при условии,
-                //Что в следующем фрейме сделан первый бросок
-                if((currentFrame.getType() == Frame.SPARE) && (frames[i+1].getShotInFrame() > 0)) {
-                    currentScore += currentFrame.getTotalPins()
-                            + frames[i+1].getPins(0);
-                    currentFrame.setScore(currentScore);
-                }
-                
-                
-                if(currentFrame.getType() == Frame.STRIKE) {
-                    nextFrame = frames[i+1];
-                    
-                    //страйк и в следующем фрейме сделан 1-й бросок
-                    if(nextFrame.getType() == Frame.STRIKE) {
-                        nextNextFrame = frames[i+2];
-                        
-                        if(nextNextFrame.getShotInFrame() > 0) {
-                            currentScore += currentFrame.getTotalPins()
-                                + nextFrame.getTotalPins() 
-                                + nextNextFrame.getPins(0);
-                            currentFrame.setScore(currentScore);
-                        }
-                    } 
-
-                    //не страйк и завершенны
-                    if((nextFrame.getType() != Frame.STRIKE) && nextFrame.isComplite()) {
-                        currentScore += currentFrame.getTotalPins()
-                            + nextFrame.getPins(0)
-                            + nextFrame.getPins(1);
-                        currentFrame.setScore(currentScore);
-                    }
-                }   
             }
         }
         return currentScore;

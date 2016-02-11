@@ -2,6 +2,10 @@ package ru.kurtov.bowling;
 
 import java.util.Arrays;
 import org.apache.commons.lang.StringUtils;
+import ru.kurtov.bowling.calculation.Calculation;
+import ru.kurtov.bowling.calculation.Open;
+import ru.kurtov.bowling.calculation.Spare;
+import ru.kurtov.bowling.calculation.Strike;
 import ru.kurtov.bowling.exceptions.ExceedPinsCountException;
 import ru.kurtov.bowling.exceptions.ExceedShotsCountException;
 import ru.kurtov.bowling.exceptions.IllegalSpareException;
@@ -10,23 +14,15 @@ import ru.kurtov.bowling.exceptions.IllegalStrikeException;
 public class Frame {
     static public final int PINS_COUNT = 10;
     
-    static public final int OPEN = 0;
-    static public final int STRIKE = 1;
-    static public final int SPARE = 2;
-    
     protected Integer[] pins;
     protected int shotInFrame = 0; //Указатель на номер броска в фрейме
     private int totalPins = 0;     //Количество сбитых кегель в фрейме
     private Integer score;
-
-    protected int type = OPEN;
+    
+    private Calculation calculation = new Open();
 
     public Frame() {
         this.pins = new Integer[]{0, 0};
-    }
-    
-    public int getType() {
-        return type;
     }
     
     public int getTotalPins() {
@@ -47,6 +43,10 @@ public class Frame {
     
     public int getPins(int shotNumber) {
         return pins[shotNumber];
+    }
+    
+    public Calculation getCalculation() {
+        return this.calculation;
     }
     
     protected void checkIllegalStrikeException(String pinsCount) {
@@ -93,7 +93,7 @@ public class Frame {
         
         this.pins[shotInFrame++] = pinsCount;
         this.totalPins += pinsCount;
-        this.type = defineType();
+        this.defineCalculation();
         
         return this;
     }
@@ -135,14 +135,12 @@ public class Frame {
     }
     
     
-    public int defineType() {
+    public void defineCalculation() {
         if(pins[0] == PINS_COUNT) {
-            return STRIKE;
+            this.calculation = new Strike();
         } else if(pins[0] + pins[1] == PINS_COUNT) {
-            return SPARE;
+            this.calculation = new Spare();
         }
-        
-        return OPEN;
     }
     
     public String shotsToString() {
