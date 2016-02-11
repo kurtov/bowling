@@ -2,6 +2,10 @@
 
 import java.util.Arrays;
 import org.apache.commons.lang.StringUtils;
+import ru.kurtov.bowling.calculation.Calculation;
+import ru.kurtov.bowling.calculation.Open;
+import ru.kurtov.bowling.calculation.Spare;
+import ru.kurtov.bowling.calculation.Strike;
 import ru.kurtov.bowling.exceptions.ExceedPinsCountException;
 import ru.kurtov.bowling.exceptions.ExceedShotsCountException;
 import ru.kurtov.bowling.exceptions.IllegalSpareException;
@@ -10,43 +14,39 @@ import ru.kurtov.bowling.exceptions.IllegalStrikeException;
 public class Frame {
     static public final int PINS_COUNT = 10;
     
-    static public final int OPEN = 0;
-    static public final int STRIKE = 1;
-    static public final int SPARE = 2;
-    
     protected Integer[] pins;
 <span class="fc" id="L18">    protected int shotInFrame = 0; //Указатель на номер броска в фрейме</span>
 <span class="fc" id="L19">    private int totalPins = 0;     //Количество сбитых кегель в фрейме</span>
     private Integer score;
-
-<span class="fc" id="L22">    protected int type = OPEN;</span>
+    
+<span class="fc" id="L22">    private Calculation calculation = new Open();</span>
 
 <span class="fc" id="L24">    public Frame() {</span>
 <span class="fc" id="L25">        this.pins = new Integer[]{0, 0};</span>
 <span class="fc" id="L26">    }</span>
     
-    public int getType() {
-<span class="fc" id="L29">        return type;</span>
-    }
-    
     public int getTotalPins() {
-<span class="fc" id="L33">        return totalPins;</span>
+<span class="fc" id="L29">        return totalPins;</span>
     }
     
     public Integer getScore() {
-<span class="fc" id="L37">        return score;</span>
+<span class="fc" id="L33">        return score;</span>
     }
 
     public void setScore(int score) {
-<span class="fc" id="L41">        this.score = score;</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L37">        this.score = score;</span>
+<span class="fc" id="L38">    }</span>
     
     public int getShotInFrame() {
-<span class="fc" id="L45">        return this.shotInFrame;</span>
+<span class="fc" id="L41">        return this.shotInFrame;</span>
     }
     
     public int getPins(int shotNumber) {
-<span class="fc" id="L49">        return pins[shotNumber];</span>
+<span class="fc" id="L45">        return pins[shotNumber];</span>
+    }
+    
+    public Calculation getCalculation() {
+<span class="fc" id="L49">        return this.calculation;</span>
     }
     
     protected void checkIllegalStrikeException(String pinsCount) {
@@ -93,7 +93,7 @@ public class Frame {
         
 <span class="fc" id="L94">        this.pins[shotInFrame++] = pinsCount;</span>
 <span class="fc" id="L95">        this.totalPins += pinsCount;</span>
-<span class="fc" id="L96">        this.type = defineType();</span>
+<span class="fc" id="L96">        this.defineCalculation();</span>
         
 <span class="fc" id="L98">        return this;</span>
     }
@@ -135,32 +135,30 @@ public class Frame {
     }
     
     
-    public int defineType() {
+    public void defineCalculation() {
 <span class="fc bfc" id="L139" title="All 2 branches covered.">        if(pins[0] == PINS_COUNT) {</span>
-<span class="fc" id="L140">            return STRIKE;</span>
+<span class="fc" id="L140">            this.calculation = new Strike();</span>
 <span class="fc bfc" id="L141" title="All 2 branches covered.">        } else if(pins[0] + pins[1] == PINS_COUNT) {</span>
-<span class="fc" id="L142">            return SPARE;</span>
+<span class="fc" id="L142">            this.calculation = new Spare();</span>
         }
-        
-<span class="fc" id="L145">        return OPEN;</span>
-    }
+<span class="fc" id="L144">    }</span>
     
     public String shotsToString() {
-<span class="fc" id="L149">        String[] ret = new String[pins.length];</span>
-<span class="fc" id="L150">        Arrays.fill(ret, &quot; &quot;);</span>
+<span class="fc" id="L147">        String[] ret = new String[pins.length];</span>
+<span class="fc" id="L148">        Arrays.fill(ret, &quot; &quot;);</span>
         
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        for(int i = 0; i&lt;shotInFrame; i++) {</span>
-<span class="fc" id="L153">            ret[i] = encodePins(i);</span>
+<span class="fc bfc" id="L150" title="All 2 branches covered.">        for(int i = 0; i&lt;shotInFrame; i++) {</span>
+<span class="fc" id="L151">            ret[i] = encodePins(i);</span>
         }
         
-<span class="fc" id="L156">        return StringUtils.join(ret, &quot;│&quot;);</span>
+<span class="fc" id="L154">        return StringUtils.join(ret, &quot;│&quot;);</span>
     }; 
     
     public static boolean availableValue(String value) {
-<span class="fc bfc" id="L160" title="All 2 branches covered.">        return StringUtils.isNumeric(value) || </span>
-<span class="fc bfc" id="L161" title="All 2 branches covered.">                value.equals(&quot;/&quot;) ||</span>
-<span class="fc bfc" id="L162" title="All 2 branches covered.">                value.equals(&quot;X&quot;) ||</span>
-<span class="fc bfc" id="L163" title="All 2 branches covered.">                value.equals(&quot;-&quot;);</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        return StringUtils.isNumeric(value) || </span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">                value.equals(&quot;/&quot;) ||</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">                value.equals(&quot;X&quot;) ||</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">                value.equals(&quot;-&quot;);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.0.201403182114</span></div></body></html>
