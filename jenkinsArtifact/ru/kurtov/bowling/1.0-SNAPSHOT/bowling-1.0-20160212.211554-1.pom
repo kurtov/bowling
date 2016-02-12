@@ -23,6 +23,13 @@
             <version>1.9.5</version>
             <scope>test</scope>
         </dependency>
+        <!-- для того, что бы перемещать артефакты сборки
+        Наверное, можно оставить что-то одно-->
+        <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-file</artifactId>
+            <version>2.10</version>
+        </dependency>
     </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,5 +59,13 @@
                </executions>
            </plugin>
        </plugins>
+       <extensions>       
+            <!-- для того, что бы перемещать артефакты сборки -->
+            <extension>  
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-file</artifactId>
+                <version>2.10</version>
+            </extension>
+       </extensions>       
    </build>
 </project>
