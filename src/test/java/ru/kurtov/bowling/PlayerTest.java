@@ -30,7 +30,6 @@ public class PlayerTest {
                 .shot("X").shot("X").shot("X");    //10
         
         assertEquals(300, player.getScore());
-        System.out.println(player.toString());
     }
 
     @Test
@@ -48,7 +47,6 @@ public class PlayerTest {
                 .shot(0).shot(0);                  //10
         
         assertEquals(0, player.getScore());
-        System.out.println(player.toString());
     }
 
     @Test
@@ -66,7 +64,6 @@ public class PlayerTest {
                 .shot(3).shot("/").shot(1);        //10
         
         assertEquals(78, player.getScore());
-        System.out.println(player.toString());
     }    
     
     
@@ -91,7 +88,6 @@ public class PlayerTest {
     @Test
     public void testNotComplite() {
         assertEquals(0, player.getScore());
-        System.out.println(player.toString());
     }
     
     @Test
@@ -101,7 +97,6 @@ public class PlayerTest {
                 .shot(3).shot("/");                //2
         
         assertEquals(3, player.getScore());
-        System.out.println(player.toString());
     }
     
     @Test
@@ -111,7 +106,6 @@ public class PlayerTest {
                 .shot("X");                        //2
         
         assertEquals(3, player.getScore());
-        System.out.println(player.toString());
     }
     
     @Test
@@ -122,7 +116,6 @@ public class PlayerTest {
                 .shot("X");                        //3
         
         assertEquals(3, player.getScore());
-        System.out.println(player.toString());
     }
     
     @Test
@@ -133,7 +126,6 @@ public class PlayerTest {
                 .shot(2);                          //3
         
         assertEquals(3, player.getScore());
-        System.out.println(player.toString());
     }
     
     @Test
@@ -145,7 +137,6 @@ public class PlayerTest {
                 .shot(7);                           //4
         
         assertEquals(30, player.getScore());
-        System.out.println(player.toString());
     }
     
     @Test

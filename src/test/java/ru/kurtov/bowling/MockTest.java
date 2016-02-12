@@ -49,7 +49,6 @@ public class MockTest {
                 .setFrame(f);                      //10
 
         assertEquals(278, player.getScore());
-        System.out.println(player.toString());
 
         verify(f, atLeastOnce()).getPins(0);  //минимум 1 раз вызывался
         verify(f, atLeastOnce()).getPins(1);  //минимум 1 раз вызывался
