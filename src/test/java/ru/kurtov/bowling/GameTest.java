@@ -52,11 +52,28 @@ public class GameTest {
     
     @Test
     public void testGame() {
-        Game.main(new String[]{"Ваня", "Перя", "2", "4", "X", "4", "/", "5", "3"});
+        boolean isOK = true;
+        
+        try {
+            Game.main(new String[]{"Ваня", "Перя", "2", "4", "X", "4", "/", "5", "3"});
+        }
+        catch (Throwable t){
+            isOK = false;
+        }
+        assertTrue(isOK);
     }
     
     @Test
     public void testEmptyGame() {
-        Game.main(new String[]{"Ваня", "Перя"});
+        
+        boolean isOK = true;
+        
+        try {
+            Game.main(new String[]{"Ваня", "Перя"});
+        }
+        catch (Throwable t){
+            isOK = false;
+        }
+        assertTrue(isOK);
     }
 }
