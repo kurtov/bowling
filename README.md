@@ -55,4 +55,4 @@ mvn exec:java -q \
 Отчет о покрытии кода тестами хронится в виде статического сайта и доступен в директории [target/site/jacoco](https://github.com/kurtov/bowling/tree/master/target/site/jacoco)
 
 ## Атрефакты CI
-В качестве CI используется Jankins. Атрефакты полученные после успешной сборки скопированы средстави "Redeploy Artifacts" в директорию [jenkinsArtifact/ru/kurtov/bowling/](https://github.com/kurtov/bowling/tree/master/jenkinsArtifact/ru/kurtov/bowling)
+В качестве CI используется Jankins. Атрефакты полученные после успешной сборки скопированы средстави "Redeploy Artifacts" в директорию [jenkinsArtifact](https://github.com/kurtov/bowling/tree/master/jenkinsArtifact). Там же находится лог сборки.
