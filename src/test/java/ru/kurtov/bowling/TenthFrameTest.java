@@ -1,5 +1,7 @@
 package ru.kurtov.bowling;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -17,102 +19,39 @@ public class TenthFrameTest {
         f = new TenthFrame();
     }
     
-    
     @Test
-    public void testShotTripleStrike_int() {
-        f.shot(10).shot(10).shot(10);
+    public void testTenthFrame() {
+        ArrayList data = new <FrameHelper>ArrayList();
         
-        assertEquals(30, f.getTotalPins());
-        assertTrue(f.isComplite());
-        assertEquals("X│X│X", f.shotsToString());
-    }
-
-    @Test
-    public void testShotStrike_int() {
-        f.shot(10).shot(4).shot(5);
+        data.add(new FrameHelper(new int[]{10, 10, 10},       30, true, "X│X│X"));
+        data.add(new FrameHelper(new int[]{10, 4,  5},        19, true, "X│4│5"));
+        data.add(new FrameHelper(new int[]{4,  6,  10},       20, true, "4│/│X"));
+        data.add(new FrameHelper(new int[]{4,  6,  3},        13, true, "4│/│3"));
+        data.add(new FrameHelper(new int[]{4,  4},             8, true, "4│4│ "));
         
-        assertEquals(19, f.getTotalPins());
-        assertTrue(f.isComplite());
-        assertEquals("X│4│5", f.shotsToString());
-    }
-    
-    @Test
-    public void testShotSpareAndStrike_int() {
-        f.shot(4).shot(6).shot(10);
+        data.add(new FrameHelper(new String[]{"X", "6", "/"}, 20, true, "X│6│/"));
+        data.add(new FrameHelper(new String[]{"X", "X", "X"}, 30, true, "X│X│X"));
+        data.add(new FrameHelper(new String[]{"X", "4", "5"}, 19, true, "X│4│5"));
+        data.add(new FrameHelper(new String[]{"4", "/", "X"}, 20, true, "4│/│X"));
+        data.add(new FrameHelper(new String[]{"4", "/", "3"}, 13, true, "4│/│3"));
+        data.add(new FrameHelper(new String[]{"4", "4"},       8, true, "4│4│ "));
         
-        assertEquals(20, f.getTotalPins());
-        assertTrue(f.isComplite());
-        assertEquals("4│/│X", f.shotsToString());
-    }
-
-    @Test
-    public void testShotStrikeAndSpare_String() {
-        f.shot("X").shot(6).shot("/");
+        data.add(new FrameHelper(new int[]{2},                 2, false, "2│ │ "));
+        data.add(new FrameHelper(new String[]{},               0, false, " │ │ "));
+        data.add(new FrameHelper(new String[]{"X"},           10, false, "X│ │ "));
+        data.add(new FrameHelper(new String[]{"X", "X"},      20, false, "X│X│ "));
+        data.add(new FrameHelper(new String[]{"3", "/"},      10, false, "3│/│ "));
         
-        assertEquals(20, f.getTotalPins());
-        assertTrue(f.isComplite());
-        assertEquals("X│6│/", f.shotsToString());
+        Iterator<FrameHelper>iterator = data.iterator();
+        while(iterator.hasNext()) {
+            FrameHelper fh = iterator.next();
+            TenthFrame frame = (TenthFrame)fh.populateFrame(new TenthFrame());           
+            
+            assertEquals(fh.getTotalPins(), frame.getTotalPins());
+            assertEquals(fh.isComplite(), frame.isComplite());
+            assertEquals(fh.getStr(), frame.shotsToString());            
+        }
     }
-    
-    @Test
-    public void testShotSpare_int() {
-        f.shot(4).shot(6).shot(3);
-        
-        assertEquals(13, f.getTotalPins());
-        assertTrue(f.isComplite());
-        assertEquals("4│/│3", f.shotsToString());
-    }
-    
-    @Test
-    public void testShotOpenFrame_int() {
-        f.shot(4).shot(4);
-        
-        assertEquals(8, f.getTotalPins());
-        assertTrue(f.isComplite());
-        assertEquals("4│4│ ", f.shotsToString());
-    }
-
-    
-    @Test
-    public void testShotTripleStrike_String() {
-        f.shot("X").shot("X").shot("X");
-        
-        assertEquals(30, f.getTotalPins());
-        assertTrue(f.isComplite());
-    }
-
-    @Test
-    public void testShotStrike_String() {
-        f.shot("X").shot("4").shot("5");
-        
-        assertEquals(19, f.getTotalPins());
-        assertTrue(f.isComplite());
-    }
-    
-    @Test
-    public void testShotSpareAndStrike_String() {
-        f.shot("4").shot("/").shot("X");
-        
-        assertEquals(20, f.getTotalPins());
-        assertTrue(f.isComplite());
-    }
-    
-    @Test
-    public void testShotSpare_String() {
-        f.shot("4").shot("/").shot("3");
-        
-        assertEquals(13, f.getTotalPins());
-        assertTrue(f.isComplite());
-    }
-    
-    @Test
-    public void testShotOpenFrame_String() {
-        f.shot("4").shot("4");
-        
-        assertEquals(8, f.getTotalPins());
-        assertTrue(f.isComplite());
-    }
-    
     
     @Test(expected = IllegalArgumentException.class)
     public void testShotIllegalArgumentException_int() {
@@ -182,32 +121,5 @@ public class TenthFrameTest {
     @Test(expected = ExceedPinsCountException.class)  
     public void testShotExceedPinsCount2() {
         f.shot("X").shot(6).shot(6);
-    }        
-    
-    
-    @Test
-    public void testIsCompliteNotComplite () {
-        assertFalse(f.isComplite());
-        assertEquals(" │ │ ", f.shotsToString());
-
-        f = new TenthFrame();
-        f.shot(2);
-        assertFalse(f.isComplite());
-        assertEquals("2│ │ ", f.shotsToString());
-        
-        f = new TenthFrame();
-        f.shot("X");
-        assertFalse(f.isComplite());
-        assertEquals("X│ │ ", f.shotsToString());
-        
-        f = new TenthFrame();
-        f.shot("X").shot("X");
-        assertFalse(f.isComplite());
-        assertEquals("X│X│ ", f.shotsToString());
-        
-        f = new TenthFrame();
-        f.shot(3).shot("/");
-        assertFalse(f.isComplite());
-        assertEquals("3│/│ ", f.shotsToString());
     }
 }
