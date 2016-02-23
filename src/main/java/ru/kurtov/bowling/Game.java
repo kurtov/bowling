@@ -8,9 +8,12 @@ import ru.kurtov.bowling.exceptions.GameWithoutPlayersException;
 public class Game {
     private final ArrayList<Player> players = new ArrayList();
     private int playerNumner = 0;
-    private int playerCount  = 0;
     private boolean started = false; //Признак начатой игры
-    
+
+    public int getPlayerCount() {
+        return players.size();
+    }
+
     public static void main(String[] args) {
         Game g = new Game();
         int i=0;
@@ -28,26 +31,25 @@ public class Game {
         
         System.out.println(g.toString());
     }
-    
+
     public Game addPlayer(String name) {
         if(started) {
             throw new AddPlayerInStartedGameException();
         }
         
         players.add(new Player(name));
-        playerCount++;
         
         return this;
     }
     
     public Player getPlayer() {
-        if(playerCount == 0) {
+        if(!hasPlayers()) {
             throw new GameWithoutPlayersException();
         }
         
         Player p = players.get(playerNumner);
         if(p.getCurrentFrame().isComplite()) {
-            playerNumner = (playerNumner + 1) % playerCount;
+            playerNumner = (playerNumner + 1) % getPlayerCount();
             p = players.get(playerNumner);
         }
         
@@ -70,15 +72,19 @@ public class Game {
     
     @Override
     public String toString() {
-        if(playerCount == 0) {
+        if(!hasPlayers()) {
             throw new GameWithoutPlayersException();
         }
-        String[] res = new String[playerCount];
+        String[] res = new String[getPlayerCount()];
         
-        for(int i = 0; i<playerCount; i++) {
+        for(int i = 0; i < getPlayerCount(); i++) {
             res[i] = players.get(i).toString();
         }
         
         return StringUtils.join(res, "\n");
+    }
+
+    private boolean hasPlayers() {
+        return getPlayerCount() > 0;
     }
 }
