@@ -75,12 +75,11 @@ public class Game {
         if(!hasPlayers()) {
             throw new GameWithoutPlayersException();
         }
-        String[] res = new String[getPlayerCount()];
-        
-        for(int i = 0; i < getPlayerCount(); i++) {
-            res[i] = players.get(i).toString();
+
+        ArrayList<String> res = new ArrayList<>();
+        for (Player player: players) {
+            res.add(player.toString());
         }
-        
         return StringUtils.join(res, "\n");
     }
 
